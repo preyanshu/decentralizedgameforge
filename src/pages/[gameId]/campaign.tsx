@@ -278,7 +278,7 @@ const CampaignPage = () => {
         <h1 style={{ fontSize: '28px' }}>Game Details for Game: {gameDetails.game.name}</h1>
         {gameDetails.game.imageUrl && (
           <img 
-            src={gameDetails.game.imageUrl} 
+          src={gameDetails.game.imageUrl && (gameDetails.game.imageUrl.startsWith('http://') || gameDetails.game.imageUrl.startsWith('https://')) ? gameDetails.game.imageUrl : 'https://t4.ftcdn.net/jpg/05/64/31/67/240_F_564316725_zE8llusnCk3Sfr9rdfKya6fV7BQbjfyV.jpg'} 
             alt="Game Image" 
             style={{ maxWidth: '100%', borderRadius: '8px', marginBottom: '20px' }} 
           />

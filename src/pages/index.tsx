@@ -90,7 +90,7 @@ const Page = () => {
         />
       )}
       <img
-        src={game?.imageUrl || 'https://via.placeholder.com/300'}
+        src={game.imageUrl && (game.imageUrl.startsWith('http://') || game.imageUrl.startsWith('https://')) ? game.imageUrl : 'https://t4.ftcdn.net/jpg/05/64/31/67/240_F_564316725_zE8llusnCk3Sfr9rdfKya6fV7BQbjfyV.jpg'}
         alt="Game Placeholder"
         style={{
           width: '100%',
@@ -172,7 +172,6 @@ const Page = () => {
 
   return (
     <div style={{ padding: '32px 16px' }}>
-      <ConnectButton />
       <h1 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '24px', color: '#2D3748' }}>
         All Active Projects
       </h1>
@@ -185,6 +184,11 @@ const Page = () => {
             backgroundColor: '#4A5568',
             borderRadius: '8px',
             color: 'white',
+            position:"absolute",
+            zIndex: 1,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
           }}
         >
           <h2>Create New Game</h2>
@@ -232,6 +236,21 @@ const Page = () => {
           >
             Create Game
           </button>
+
+          <button
+            onClick={() => setShowCreateForm(false)}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: 'red',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              marginLeft: '28px',
+            }}
+          >
+            Cancel
+          </button>
         </div>
       )}
 
@@ -251,7 +270,7 @@ const Page = () => {
         My Projects
       </h1>
       <button
-        onClick={() => setShowCreateForm(!showCreateForm)}
+        onClick={() => setShowCreateForm(true)}
         style={{
           marginLeft: 'auto',
           display: 'block',
@@ -264,7 +283,7 @@ const Page = () => {
           cursor: 'pointer',
         }}
       >
-        {showCreateForm ? 'Close Form' : 'Create New Game'}
+       Create New Game
       </button>
       <div
         style={{

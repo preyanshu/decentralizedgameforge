@@ -107,7 +107,7 @@ const Page = () => {
       <div style={{ padding: '16px' }}>
         <h2 style={{ fontSize: '18px', fontWeight: '600' }}>{game.name}</h2>
         <p style={{ color: 'white', marginTop: '8px' }}>{game.vision}</p>
-        <p style={{ color: 'white', marginTop: '8px' }}>
+        <p style={{ color: 'white', marginTop: '8px' , wordBreak :"break-word"}}>
           <a
             href={game.githubUrl}
             target="_blank"

@@ -320,12 +320,13 @@ const ProposalPage = () => {
                 <p><strong>Executed:</strong>{proposal.executed?"True":"False"}</p>
                 <p><strong>No Votes:</strong> {Number(proposal.noVotes)}</p>
                 <p><strong>Yes Votes:</strong> {Number(proposal.yesVotes)}</p>
+               
                 <p style={{ color: Number(proposal.noVotes) === Number(proposal.yesVotes) ? "grey" : Number(proposal.noVotes) > Number(proposal.yesVotes) ? "red" : "green" }}>
   {Number(proposal.noVotes) === Number(proposal.yesVotes) ? "Drawn" : Number(proposal.noVotes) > Number(proposal.yesVotes) ? "Proposal Rejected by Community" : "Proposal Approved by Community"}
 </p>
 
 
-                {account?.address && account.address === gameDetails?.game?.owner && (Number(proposal.noVotes)<Number(proposal.yesVotes) ) &&<>
+                {account?.address && String(account.address) === String(gameDetails?.game?.owner) && (Number(proposal.noVotes)<Number(proposal.yesVotes) ) &&<>
                   <button
             style={{
               marginBottom: '20px',

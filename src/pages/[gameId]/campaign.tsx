@@ -121,7 +121,7 @@ const CampaignPage = () => {
       alert('Please connect your wallet to create a game.');
       return;
     }
-    
+
     try {
       // Call the contribute function
       console.log('campaignId', campaignId);
@@ -216,7 +216,7 @@ const CampaignPage = () => {
                 <h3 style={{ color: '#0073e6', fontSize: '20px' }}>Description: {campaign.description}</h3>
                 <p><strong>Goal:</strong> {ethers.formatEther(campaign.goal)} ETH</p>
 <p><strong>Funds Raised:</strong> {ethers.formatEther(campaign.fundsRaised)} ETH</p>
-                <p><strong>Ends in:</strong> {getCountdown(campaign.deadline)}</p>
+                <p><strong>Ends in:</strong> 0 Days , 0 Hours</p>
                 <p><strong>Status:</strong> {campaign.success ? 'Success' : 'Failed'}</p>
                 <p><strong>Funds Withdrawn:</strong> {campaign.fundsWithdrawn ? 'Yes' : 'No'}</p>
 

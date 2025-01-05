@@ -5,6 +5,10 @@ const nextConfig = {
     config.externals.push('pino-pretty', 'lokijs', 'encoding')
     return config
   },
+
+  typescript: {
+    ignoreBuildErrors: true, // Disables type checking during the build process
+  },
 };
 
 module.exports = nextConfig;

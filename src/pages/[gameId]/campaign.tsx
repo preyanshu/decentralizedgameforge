@@ -118,14 +118,15 @@ const CampaignPage = () => {
   const handleWithDraw = async (campaignId) => {
     try {
       // Call the contribute function
+      console.log('campaignId', campaignId);
       await withdrawFunds(campaignId);
       alert('WithDraw successful.');
   
       // Refresh campaign list after contribution
       fetchGameDetails();
     } catch (err) {
-      console.error('Error contributing to campaign:', err);
-      alert('Failed to contribute to the campaign. Please try again later.');
+      console.error('Error withdraw to campaign:', err);
+      alert('Failed to withdraw to the campaign. Please try again later.');
     }
   };
 
@@ -138,13 +139,13 @@ const CampaignPage = () => {
   // Render active and completed campaigns
   const renderCampaignsSection = () => (
     <>
-      <h2 style={{ color: '#333', fontSize: '24px' }}>Active Campaigns</h2>
+      <h2 style={{  fontSize: '24px' }}>Active Campaigns</h2>
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
         gap: '20px',
         padding: '10px',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#333333',
         borderRadius: '8px'
       }}>
         {gameDetails.campaigns.filter((campaign) =>  Number(campaign.deadline) > Date.now()/1000 &&  !campaign.success).length > 0 ? (
@@ -155,12 +156,12 @@ const CampaignPage = () => {
                 padding: '15px',
                 border: '1px solid #ddd',
                 borderRadius: '5px',
-                backgroundColor: '#fff',
+                backgroundColor: '#2D3748',
                 boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
               }}>
-                <h3 style={{ color: '#0073e6', fontSize: '20px' }}>Campaign: {campaign.description}</h3>
-                <p><strong>Goal:</strong> {Number(campaign.goal)} ETH</p>
-                <p><strong>Funds Raised:</strong> {Number(campaign.fundsRaised)} ETH</p>
+                <h3 style={{ color: '#0073e6', fontSize: '20px' }}>Description: {campaign.description}</h3>
+                <p><strong>Goal:</strong> {ethers.formatEther(campaign.goal)} ETH</p>
+                <p><strong>Funds Raised:</strong> {ethers.formatEther(campaign.fundsRaised)} ETH</p>
                 <p><strong>Ends in:</strong> {getCountdown(campaign.deadline)}</p>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -186,34 +187,34 @@ const CampaignPage = () => {
         )}
       </div>
 
-      <h2 style={{ color: '#333', fontSize: '24px' }}>Completed Campaigns</h2>
+      <h2 style={{ fontSize: '24px' }}>Completed Campaigns</h2>
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
         gap: '20px',
         padding: '10px',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#333333',
         borderRadius: '8px'
       }}>
-        {gameDetails.campaigns.filter((campaign) => campaign.success || (Number(campaign.deadline) > Date.now()/1000) ).length > 0 ? (
+        {gameDetails.campaigns.filter((campaign) => campaign.success || (Number(campaign.deadline) < Date.now()/1000) ).length > 0 ? (
           gameDetails.campaigns
-            .filter((campaign) => campaign.success || (Number(campaign.deadline) > Date.now()/1000) )
+            .filter((campaign) => campaign.success || (Number(campaign.deadline) < Date.now()/1000) )
             .map((campaign, index) => (
               <div key={index} style={{
                 padding: '15px',
                 border: '1px solid #ddd',
                 borderRadius: '5px',
-                backgroundColor: '#fff',
+                backgroundColor: '#2D3748',
                 boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
               }}>
-                <h3 style={{ color: '#0073e6', fontSize: '20px' }}>Campaign: {campaign.description}</h3>
-                <p><strong>Goal:</strong> {Number(campaign.goal)} ETH</p>
-                <p><strong>Funds Raised:</strong> {Number(campaign.fundsRaised)} ETH</p>
+                <h3 style={{ color: '#0073e6', fontSize: '20px' }}>Description: {campaign.description}</h3>
+                <p><strong>Goal:</strong> {ethers.formatEther(campaign.goal)} ETH</p>
+<p><strong>Funds Raised:</strong> {ethers.formatEther(campaign.fundsRaised)} ETH</p>
                 <p><strong>Ends in:</strong> {getCountdown(campaign.deadline)}</p>
                 <p><strong>Status:</strong> {campaign.success ? 'Success' : 'Failed'}</p>
                 <p><strong>Funds Withdrawn:</strong> {campaign.fundsWithdrawn ? 'Yes' : 'No'}</p>
 
-                {account?.address && account.address === gameDetails?.game?.owner  && !campaign.fundsWithdrawn &&<>
+                {account?.address && account.address === gameDetails?.game?.owner  && !campaign.fundsWithdrawn  &&<>
                   <button
             style={{
               marginBottom: '20px',
@@ -263,17 +264,17 @@ const CampaignPage = () => {
         <strong>Error:</strong> {error}
       </div>
     );
-  }
+  }  
 
   return (
     <div style={{ padding: '20px' }}>
       <div style={{
         padding: '20px',
-        backgroundColor: '#0073e6',
+        backgroundColor: '#333333',
         color: '#fff',
         borderRadius: '8px',
         marginBottom: '20px',
-        textAlign: 'center'
+        textAlign: 'center',
       }}>
         <h1 style={{ fontSize: '28px' }}>Game Details for Game: {gameDetails.game.name}</h1>
         {gameDetails.game.imageUrl && (

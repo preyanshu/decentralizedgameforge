@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router'; // To get dynamic gameId
+import { useRouter } from 'next/router'; 
 import { getAllGameDetails , createProposal , voteProposal , createCrowdfunding } from '../../utils/contractUtils'; // Assuming this is the contract function you call to get data
 import { getAccount } from '@wagmi/core';
 import { config } from '../../wagmi';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
-import { set } from 'react-datepicker/dist/date_utils';
 import {ethers} from 'ethers';
 
 
@@ -35,12 +34,6 @@ const ProposalPage = () => {
     deadline: new Date(),
   });
   const account = getAccount(config);
-
-  // Convert Unix timestamp (bigint) to a readable date
-  const formatDeadline = (timestamp) => {
-    const date = new Date(Number(timestamp));
-    return date.toLocaleString(); // Customize as needed
-  };
 
   // Get countdown until deadline
   const getCountdown = (deadline) => {
@@ -115,10 +108,10 @@ const ProposalPage = () => {
 
 
 
-    // if (deadlineUnix - Math.floor(Date.now())/1000 < 15 * 24 * 60 * 60) {
-    //   alert('Deadline must be at least 15 days from today.');
-    //   return;
-    // }
+    if (deadlineUnix - Math.floor(Date.now())/1000 < 15 * 24 * 60 * 60) {
+      alert('Deadline must be at least 15 days from today.');
+      return;
+    }
 
 
     console.log('deadlineUnix', deadlineUnix);
@@ -218,7 +211,8 @@ const ProposalPage = () => {
   // Render active and completed proposals
   const renderProposalsSection = () => (
     <>
-      <h2 style={{ color: '#333', fontSize: '24px' }}>Active Proposals</h2>
+    <div style={{display:"flex",justifyContent:"space-between"}}>
+      <h2 style={{ color: 'orange', fontSize: '24px' }}>Active Proposals</h2>
 
       <button
             style={{
@@ -236,12 +230,14 @@ const ProposalPage = () => {
             Create Proposal
           </button>
 
+          </div>
+
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
         gap: '20px',
         padding: '10px',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#333333',
         borderRadius: '8px'
       }}>
         {gameDetails.proposals.filter((proposal) => !proposal.executed && Number(proposal.deadline) > Date.now()/1000).length > 0 ? (
@@ -252,7 +248,7 @@ const ProposalPage = () => {
                 padding: '15px',
                 border: '1px solid #ddd',
                 borderRadius: '5px',
-                backgroundColor: '#fff',
+                backgroundColor:"#2D3748",
                 boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
               }}>
                 <h3 style={{ color: '#0073e6', fontSize: '20px' , wordWrap: 'break-word', whiteSpace: 'normal', }}>Proposal by {proposal.creator}</h3>
@@ -281,16 +277,16 @@ const ProposalPage = () => {
         )}
       </div>
 
-      <h2 style={{ color: '#333', fontSize: '24px' }}>Completed Proposals</h2>
+      <h2 style={{ color: 'orange', fontSize: '24px' }}>Completed Proposals</h2>
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
         gap: '20px',
         padding: '10px',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#333333',
         borderRadius: '8px'
       }}>
-        {gameDetails?.proposals?.filter((proposal) => proposal.deadline < Date.now()/1000).length > 0 ? (
+          {gameDetails?.proposals?.filter((proposal) => proposal.deadline < Date.now()/1000).length > 0 ? (
           gameDetails.proposals
             .filter((proposal) => proposal.deadline < Date.now()/1000)
             .map((proposal, index) => (
@@ -298,15 +294,21 @@ const ProposalPage = () => {
                 padding: '15px',
                 border: '1px solid #ddd',
                 borderRadius: '5px',
-                backgroundColor: '#fff',
+                backgroundColor:"#2D3748",
                 boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
               }}>
-                <h3 style={{ color: '#0073e6', fontSize: '20px' }}>Proposal by {proposal.creator}</h3>
+                <h3 style={{ color: '#0073e6', fontSize: '20px',wordWrap: 'break-word', whiteSpace: 'normal',  }}>Proposal by {proposal.creator}</h3>
                 <p>{proposal.description}</p>
                 <p><strong>Deadline:</strong> {getCountdown(proposal.deadline)}</p>
+                <p><strong>Executed:</strong>{proposal.executed?"True":"False"}</p>
                 <p><strong>No Votes:</strong> {Number(proposal.noVotes)}</p>
                 <p><strong>Yes Votes:</strong> {Number(proposal.yesVotes)}</p>
-                {account?.address && account.address === gameDetails?.game?.owner && (Number(proposal.noVotes)<Number(proposal.yesVotes)) &&<>
+                <p style={{ color: Number(proposal.noVotes) === Number(proposal.yesVotes) ? "grey" : Number(proposal.noVotes) > Number(proposal.yesVotes) ? "red" : "green" }}>
+  {Number(proposal.noVotes) === Number(proposal.yesVotes) ? "Drawn" : Number(proposal.noVotes) > Number(proposal.yesVotes) ? "Proposal Rejected by Community" : "Proposal Approved by Community"}
+</p>
+
+
+                {account?.address && account.address === gameDetails?.game?.owner && (Number(proposal.noVotes)<Number(proposal.yesVotes) ) &&<>
                   <button
             style={{
               marginBottom: '20px',
@@ -323,9 +325,9 @@ const ProposalPage = () => {
               setShowCampaignModal(true);
               
             }}
-            disabled={!account.address}
+            disabled={!account.address || proposal.executed}  
           >
-            Proceed to Crowdfunding
+            {proposal.executed ? 'Campaign already Created' : 'Create Campaign'}
           </button>
                 </>}
               </div>
@@ -335,40 +337,7 @@ const ProposalPage = () => {
         )}
       </div>
 
-      {/* {showProposalModal && (
-        <div style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          backgroundColor: '#fff',
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
-        }}>
-          <h2>Create a Proposal</h2>
-          <label>
-            Description:
-            <textarea
-              value={proposalData.description}
-              onChange={(e) => setProposalData({ ...proposalData, description: e.target.value })}
-              style={{ width: '100%', marginBottom: '10px' }}
-            />
-          </label>
-          <label>
-            Deadline:
-            <DatePicker
-              selected={proposalData.deadline}
-              onChange={(date) => setProposalData({ ...proposalData, deadline: date })}
-              showTimeSelect
-              dateFormat="Pp"
-              style={{ width: '100%', marginBottom: '10px' }}
-            />
-          </label>
-          <button onClick={handleCreateProposal} style={{ marginRight: '10px' }}>Submit</button>
-          <button onClick={() => setShowProposalModal(false)}>Cancel</button>
-        </div>
-      )} */}
+  
     </>
   );
 
@@ -387,6 +356,8 @@ const ProposalPage = () => {
             padding: '20px',
             borderRadius: '8px',
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+
+            color:"black",
             zIndex: 1000,
             width: '400px',
           }}
@@ -443,6 +414,7 @@ const ProposalPage = () => {
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
+                marginTop: '20px',
               }}
               onClick={handleCreateProposal}
             >
@@ -456,6 +428,7 @@ const ProposalPage = () => {
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
+                marginTop: '20px',
               }}
               onClick={() => setShowProposalModal(false)}
             >
@@ -473,6 +446,7 @@ const ProposalPage = () => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             backgroundColor: 'white',
+            color:"black",
             padding: '20px',
             borderRadius: '8px',
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -482,22 +456,6 @@ const ProposalPage = () => {
         >
           <h2 style={{ marginBottom: '20px' }}>Create a Crowdfunding Campaign</h2>
   
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Campaign Title</label>
-            <input
-              type="text"
-              style={{
-                width: '100%',
-                padding: '10px',
-                marginBottom: '10px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-              }}
-              value={campaignData.title}
-              onChange={(e) => setCampaignData({ ...campaignData, title: e.target.value })}
-              placeholder="Enter campaign title"
-            />
-          </div>
   
           <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Goal (in Eth)</label>
           <input
@@ -587,7 +545,7 @@ const ProposalPage = () => {
     <div style={{ padding: '20px' }}>
       <div style={{
         padding: '20px',
-        backgroundColor: '#0073e6',
+        backgroundColor: '#333333',
         color: '#fff',
         borderRadius: '8px',
         marginBottom: '20px',

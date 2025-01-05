@@ -7,6 +7,7 @@ import { config } from '../wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
 import { FaTrash } from 'react-icons/fa'; // Import delete icon
+import { set } from 'react-datepicker/dist/date_utils';
 
 const Page = () => {
   const [gameDetails, setGameDetails] = useState([]);
@@ -24,6 +25,7 @@ const Page = () => {
     setLoading(true);
     try {
       const games = await getAllGameDetails();
+      console.log('Games:', games);
       const validGames = games[0].filter((game) => game.exists === true);
       setGameDetails(validGames);
     } catch (err) {
@@ -100,8 +102,8 @@ const Page = () => {
       />
       <div style={{ padding: '16px' }}>
         <h2 style={{ fontSize: '18px', fontWeight: '600' }}>{game.name}</h2>
-        <p style={{ color: '#A0AEC0', marginTop: '8px' }}>{game.vision}</p>
-        <p style={{ color: '#A0AEC0', marginTop: '8px' }}>
+        <p style={{ color: 'white', marginTop: '8px' }}>{game.vision}</p>
+        <p style={{ color: 'white', marginTop: '8px' }}>
           <a
             href={game.githubUrl}
             target="_blank"
@@ -111,7 +113,7 @@ const Page = () => {
             GitHub: {game.githubUrl}
           </a>
         </p>
-        <p style={{ color: '#A0AEC0', marginTop: '8px' }}>Owner: {game.owner}</p>
+        <p style={{ color: 'white', marginTop: '8px' , wordWrap: 'break-word', whiteSpace: 'normal' }}>Owner: {game.owner}</p>
         <div style={{ marginTop: '16px' }}>
           <Link href={`/${game.id}/proposal`}>
             <button
@@ -148,14 +150,25 @@ const Page = () => {
   );
 
   const handleCreateFormSubmit = async () => {
-    const { name, vision, imageUrl, githubUrl } = newGameData;
-    if (!name || !vision || !githubUrl) {
-      return alert('Please fill out all required fields.');
+    try{
+      const { name, vision, imageUrl, githubUrl } = newGameData;
+      if (!name || !vision || !githubUrl) {
+        return alert('Please fill out all required fields.');
+      }
+
+      console.log('Creating game:', newGameData);
+      const tx = await createGame(name, vision, githubUrl, imageUrl || 'n/a');
+      fetchGameDetails();
+      alert('Game Created! Transaction: ' + tx);
+      setShowCreateForm(false);
+
     }
-    const tx = await createGame(name, vision, githubUrl, imageUrl || 'https://via.placeholder.com/300');
-    fetchGameDetails();
-    alert('Game Created! Transaction: ' + tx);
-    setShowCreateForm(false);
+    catch(err){
+      console.error('Error creating game:', err);
+      setShowCreateForm(false);
+      alert('Failed to create game. Please try again later.' , err.message);
+    }
+   
   };
 
   const handleChange = (e) => {
@@ -165,14 +178,14 @@ const Page = () => {
   if (loading) {
     return (
       <div style={{ padding: '32px 16px' }}>
-        <p style={{ color: '#A0AEC0' }}>Loading...</p>
+        <p style={{ color: 'white' }}>Loading...</p>
       </div>
     );
   }
 
   return (
     <div style={{ padding: '32px 16px' }}>
-      <h1 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '24px', color: '#2D3748' }}>
+      <h1 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '24px', color: 'Orange' }}>
         All Active Projects
       </h1>
 
@@ -263,10 +276,10 @@ const Page = () => {
       >
         {gameDetails.length > 0
           ? gameDetails.map((game, index) => renderCard(game, index))
-          : <p style={{ color: '#A0AEC0' }}>No active projects available.</p>}
+          : <p style={{ color: 'white' }}>No active projects available.</p>}
       </div>
 
-      <h1 style={{ fontSize: '24px', fontWeight: '700', marginTop: '48px', marginBottom: '24px', color: '#2D3748' }}>
+      <h1 style={{ fontSize: '24px', fontWeight: '700', marginTop: '48px', marginBottom: '24px', color: 'orange' }}>
         My Projects
       </h1>
       <button
@@ -276,7 +289,7 @@ const Page = () => {
           display: 'block',
           marginBottom: '20px',
           padding: '8px 16px',
-          backgroundColor: '#48BB78',
+          backgroundColor: 'blue',
           color: 'white',
           border: 'none',
           borderRadius: '4px',
@@ -294,7 +307,7 @@ const Page = () => {
       >
         {myProjects.length > 0
           ? myProjects.map((project, index) => renderCard(project, index, true))
-          : <p style={{ color: '#A0AEC0' }}>You have not created any projects yet.</p>}
+          : <p style={{ color: 'white' }}>You have not created any projects yet.</p>}
       </div>
     </div>
   );

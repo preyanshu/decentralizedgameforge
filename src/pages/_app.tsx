@@ -52,6 +52,7 @@ const styles = {
     position: 'sticky',
     top: 0,
     width: '100%',
+    zIndex: 1,
   },
   button: {
     background: 'none',

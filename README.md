@@ -17,25 +17,7 @@ A decentralized platform empowering developers and communities to collaborativel
 ----
 
 
-#### **Key Features**
 
-1.  **Game Creation:**
-    
-    -   Developers register and manage game projects with decentralized ownership.
-2.  **Proposal Mechanism:**
-    
-    -   Community members propose features or ideas for games, with on-chain voting.
-3.  **Crowdfunding Integration:**
-    
-    -   Approved proposals are converted into crowdfunding campaigns for community-driven funding.
-
-5.  **Scalable and Secure:**
-    
-    -   Modular, future-proof architecture with robust smart contract security.
-6.  **Transparent Governance:**
-    
-    -   Fully decentralized decision-making for proposals and fund allocation.
----
 ### **How It Works**
 
 1.  **Create and Manage Game Projects:**
@@ -82,6 +64,25 @@ A decentralized platform empowering developers and communities to collaborativel
 
 
 
+---
+#### **Key Features**
+
+1.  **Game Creation:**
+    
+    -   Developers register and manage game projects with decentralized ownership.
+2.  **Proposal Mechanism:**
+    
+    -   Community members propose features or ideas for games, with on-chain voting.
+3.  **Crowdfunding Integration:**
+    
+    -   Approved proposals are converted into crowdfunding campaigns for community-driven funding.
+
+5.  **Scalable and Secure:**
+    
+    -   Modular, future-proof architecture with robust smart contract security.
+6.  **Transparent Governance:**
+    
+    -   Fully decentralized decision-making for proposals and fund allocation.
 ---
 
 ### **Business Model**

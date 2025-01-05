@@ -206,7 +206,7 @@ const Page = () => {
             backgroundColor: '#4A5568',
             borderRadius: '8px',
             color: 'white',
-            position:"absolute",
+            position:"fixed",
             zIndex: 1,
             top: '50%',
             left: '50%',

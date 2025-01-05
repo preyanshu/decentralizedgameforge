@@ -97,7 +97,7 @@ const ProposalPage = () => {
   const handleCreateProposal = async () => {
 
     if(account.isConnected === false){
-      alert('Please connect your wallet to create a game.');
+      alert('Please connect your wallet');
       return;
     }
     
@@ -144,7 +144,7 @@ const ProposalPage = () => {
   const handleCreateCampaign = async () => {
 
     if(account.isConnected === false){
-      alert('Please connect your wallet to create a game.');
+      alert('Please connect your wallet');
       return;
     }
 
@@ -193,7 +193,7 @@ const ProposalPage = () => {
   const handleVote = async (proposalId, voteType) => {
 
     if(account.isConnected === false){
-      alert('Please connect your wallet to create a game.');
+      alert('Please connect your wallet');
       return;
     }
     if (!account.address) {

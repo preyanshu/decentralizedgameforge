@@ -82,7 +82,7 @@ const CampaignPage = () => {
 
   const handleContribute = async (campaignId) => {
     if(account.isConnected === false){
-      alert('Please connect your wallet to create a game.');
+      alert('Please connect your wallet');
       return;
     }
     try {
@@ -118,7 +118,7 @@ const CampaignPage = () => {
   const handleWithDraw = async (campaignId) => {
 
     if(account.isConnected === false){
-      alert('Please connect your wallet to create a game.');
+      alert('Please connect your wallet');
       return;
     }
 

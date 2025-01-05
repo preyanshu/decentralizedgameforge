@@ -242,7 +242,7 @@ const ProposalPage = () => {
               cursor: 'pointer',
             }}
             onClick={() => setShowProposalModal(true)}
-            disabled={!account.address}
+          
           >
             Create Proposal
           </button>

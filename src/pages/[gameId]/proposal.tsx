@@ -242,7 +242,7 @@ const ProposalPage = () => {
               cursor: 'pointer',
             }}
             onClick={() => setShowProposalModal(true)}
-          
+           
           >
             Create Proposal
           </button>
@@ -343,7 +343,7 @@ const ProposalPage = () => {
               setShowCampaignModal(true);
               
             }}
-            disabled={!account.address || proposal.executed}  
+            disabled={ proposal.executed}  
           >
             {proposal.executed ? 'Campaign already Created' : 'Create Campaign'}
           </button>

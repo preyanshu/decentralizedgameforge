@@ -238,7 +238,7 @@ const CampaignPage = () => {
               
               
             }}
-            disabled={!account.address}
+            
           >
             WithDraw Funds
           </button>

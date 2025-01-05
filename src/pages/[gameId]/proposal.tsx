@@ -95,6 +95,12 @@ const ProposalPage = () => {
   };
 
   const handleCreateProposal = async () => {
+
+    if(account.isConnected === false){
+      alert('Please connect your wallet to create a game.');
+      return;
+    }
+    
     if (!proposalData.description || !proposalData.deadline) {
       alert('Please fill out all fields.');
       return;
@@ -136,6 +142,12 @@ const ProposalPage = () => {
 
 
   const handleCreateCampaign = async () => {
+
+    if(account.isConnected === false){
+      alert('Please connect your wallet to create a game.');
+      return;
+    }
+
     if ( !campaignData.targetAmount || !campaignData.deadline) {
       alert('Please fill out all fields.');
       return;
@@ -179,6 +191,11 @@ const ProposalPage = () => {
 
 
   const handleVote = async (proposalId, voteType) => {
+
+    if(account.isConnected === false){
+      alert('Please connect your wallet to create a game.');
+      return;
+    }
     if (!account.address) {
       alert('Please connect your wallet to vote.');
       return;

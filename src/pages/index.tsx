@@ -52,6 +52,10 @@ const Page = () => {
   }, []);
 
   const handleDelete = async (gameId) => {
+    if(account.isConnected === false){
+      alert('Please connect your wallet to create a game.');
+      return;
+    }
     const confirm = window.confirm('Are you sure you want to delete this game?');
     if (confirm) {
       try {
@@ -150,6 +154,11 @@ const Page = () => {
   );
 
   const handleCreateFormSubmit = async () => {
+
+    if(account.isConnected === false){
+      alert('Please connect your wallet to create a game.');
+      return;
+    }
     try{
       const { name, vision, imageUrl, githubUrl } = newGameData;
       if (!name || !vision || !githubUrl) {

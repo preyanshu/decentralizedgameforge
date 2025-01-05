@@ -13,11 +13,7 @@ const CampaignPage = () => {
   const [error, setError] = useState(null); // To handle errors
   const account = getAccount(config);
 
-  // Convert Unix timestamp (bigint) to a readable date
-  const formatDeadline = (timestamp) => {
-    const date = new Date(Number(timestamp));
-    return date.toLocaleString(); // Customize as needed
-  };
+
 
   // Get countdown until deadline
   const getCountdown = (deadline) => {
@@ -85,6 +81,10 @@ const CampaignPage = () => {
   
 
   const handleContribute = async (campaignId) => {
+    if(account.isConnected === false){
+      alert('Please connect your wallet to create a game.');
+      return;
+    }
     try {
       // Prompt user to enter the amount of ETH they want to contribute
       let amount = window.prompt('Enter the amount of ETH you want to contribute:');
@@ -116,6 +116,12 @@ const CampaignPage = () => {
   };
 
   const handleWithDraw = async (campaignId) => {
+
+    if(account.isConnected === false){
+      alert('Please connect your wallet to create a game.');
+      return;
+    }
+    
     try {
       // Call the contribute function
       console.log('campaignId', campaignId);
